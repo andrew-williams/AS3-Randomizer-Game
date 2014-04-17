@@ -1,0 +1,68 @@
+﻿Weapon Slots
+
+Earlygame/Midgame/Lategame
+----------------------
+1 : Infinite Ammo Items
+----------------------
+None
+Blaster
+----------------------
+2 : Pocket Weapons
+----------------------
+.45 Colt Revolver
+9mm Beretta
+Desert Eagle
+Plasma Pistol
+
+
+----------------------
+3 : Rifles
+----------------------
+Shotgun
+Sawed-off Shotgun
+Assault Shotgun
+Sniper Rifle
+----------------------
+4 : Automatic
+----------------------
+M-16
+Combat Rifle
+Plasma Rifle
+----------------------
+5 : Heavy
+----------------------
+Minigun
+Chaingun
+Vulcan
+Hyperblaster
+Flamethrower
+----------------------
+6 : Explosives
+----------------------
+M79 Grenade launcher
+LAW Rocket LAuncher
+RG-6 Grenade launcher
+-
+-
+High Explosive Rocket Launcher
+----------------------
+7 : mid game weapons general
+----------------------
+----------------------
+8 : mid game weapons
+----------------------
+S
+----------------------
+9 : High end weapons / general
+----------------------
+Railgun
+//Magic
+Energy Beam
+----------------------
+0 : High end weapons / Lategame
+----------------------
+Plasma Cannon
+Nuclear Launcher
+//Magic
+Boltcaster
+

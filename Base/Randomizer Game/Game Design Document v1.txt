@@ -1,0 +1,104 @@
+MY Game design document. haha...
+
+
+	Table of Contents [TOC]
+	-----------------------
+
+0. Table of contents [TOC]
+1. Game Mechanics [GMEC]
+
+	Game Mechanics [GMEC]
+        ---------------------
+
+1. Random map generation:
+   Summary: The game will generate rooms randomly to form a level. Does the same for the minimap.
+   
+   - First, a defined map size is created (In this case, 11 x 11).
+   - Select a room randomly from the grid. That will be the starting point. Create the room.
+   - If current grid location is empty, create the room.
+   - Create doors randomly from one of four sides (less if the room is on the side or corner). Starting room has minimum one door.
+   - When a door is created, immediately attempt to create another room. Repeat until unable to create room or no additional doors randomized.
+   - After the level has been generated, select an existing room at random that is not the starting room. Replace it with an exit room. Exit room always have 4 doors
+     By having 4 doors, this ensures that the exit always connects with the rest of the level.
+   - Populate all existing rooms with objects and entities, room type is selected randomly. Exit and start rooms always generate the same to signify an exit/start room.
+   - Once everything is complete, remove all doors that is not linked to a room. (ex. west door of a room connects to nothing, or west door of a room connects to a room
+     but that room to the west does not have an east door. This ensures that there will be no broken paths and will always have a path to the exit, as all rooms generated
+     originate from the starting position. Therfore it is possible to create a path to every single room from the starting room.
+
+2. Debug Console:
+   Summary: The console allows entering commands to debug certain things in game and enable cheats to allow for faster play-testing.
+
+   - Console is active when enabled, appearing on the game screen. Otherwise, it is invisible and cannot be accessed.
+   - When console is activated, the game focuses on the input section of the console to enable immediate input of commands. A user may press the up-key to conveniently
+     print out the last input issued for the user to run.
+   - The console will accept 4 input strings to be processed, everything else will be ignored. The first string is the main input and the last 3 are additional attributes.
+   - Console also allows display of messages and accepts any strings that are fed to the console to be displayed.
+   - Latest console messages may be displayed in game when objects are picked up or an event happens etc. which is also displayed in the console output.
+   - Available Console commands at time of writing in alphabetical order:
+	- commands <command>
+	  This command displays all available commands available. <command> accepts any available commands to provide a detailed description of the command in-game.
+	- endlevel
+	  This command immediately ends the level. The game treats this as touching the exit point to move on to the next level and does everything normally.
+	- give <all>
+	  This command gives the player something. Currently, it only accepts the 'all' attribute, which gives the player everything that the player can hold. This also
+          sets the skill points of the character to a high number and gives the player all powerups as if the player had just picked one up normally.
+	- god
+	  This command allows the player to be invulnerable to all damage sources. Typing this command a second time will disable the effect.
+	- mem
+	  This command prints out the total memory being used by the flash player. (not only the game, it will take everything if there are other flash applications).
+	- noclip
+	  This command allows the player to be unaffected by collision. The player may walk through walls and pass objects that affect player stats such as movement
+	  speed. The player may still pick up items. Typing this command a second time will disable the effect.
+	- quit
+	  This command acts the same way as the quit button, to quit the current game and bring the user back to the main menu screen.
+	- rateoffire <value>
+	  This command changes the attack speed of the current value to the specified <value> within limits to allow quick testing of proper fire rates. Accepts values
+	  between 10 and 2000 (10ms to 2 seconds).
+	- resetpush
+	  This command resets all available push blocks in a room to its original starting location.
+	- revealminimap
+	  This command reveals the entire minimap, showing all available rooms for the current level.
+	- spawn <entity> <xval> <yval>
+	  This command creates an <entity> at target <xval> and <yval> location on the current room. Objects may spawn through walls, but never outside the playing field.
+	  Typing 'spawn list' displays an entire list of entities that may be spawned by the user.
+	- speed <value>
+	  This command changes the movement speed of the player on the spot. Changing values too high may prevent the user from switching to a new room until the user
+	  lowers the speed value.
+	- summon <entity> <xval> <yval>
+	  This command creates an <entity> enemy at target <xval> and <yval> location on the current room. Enemies may spawn through walls, but never outside the playing field.
+	  Typing 'summon list' displays an entire list of enemies that may be spawned by the user. All enemies are subject to collision (may get trapped in walls if spawned
+	  inside a wall).
+	- teleport <xval> <yval>
+	  This command teleports the player to target <xval> and <yval> in the current room.
+	- trace <string>
+	  This command is for debugging purposes, calls a trace command which displays <string>. Also displays the output in the console to signify that the command was issued.
+
+3. Weapon changer System:
+   Summary: The weapon system used in the game is a slot based system. It allows for multiple selection of weapons by pressing certain keys and also allows multiple weapons
+	    in the same slot.
+
+   - All weapon and ammunition data are initialized and then passed into the weapon changer system.
+   - When a new slot is being accessed, the game will determine if the player has any assigned weapons for that slot.
+   - If there are weapons available for the slot, the system will search from the first weapon data and cycle through until the system finds an available weapon.
+   - If the last slot that was accessed was the same slot currently being accessed, the system will start with the current weapon in that slot and check for the next weapons
+     until the system finds another weapon that is available. 
+   - If the system reaches a max count of weapons for the slot without an available weapon, the system will reset back to the first weapon in the current slot and resume searching.
+   - If there is only 1 weapon in the slot available, the system will eventually end up back to the current weapon, in which the system will end the search, not changing weapons.
+   - Once a new weapon is selected, the game will assign the proper attack speed and ammo type values for the weapon.
+
+4. Entity definitions
+   Summary: Where all entities and objects are defined.
+
+   - New weapons are added to the weapon initializer. One may easily assign weapon name, slots, and if the player starts off with the weapon.
+   - Ammunition are tracked by what weapon is being used and displays the appropiate HUD graphic and counters.
+   - All items, weapons, enemies, etc. are placed into their respective 'containers'. The entity definitions define where the object is located in their respective containers.
+   - Entity definition also handles lists to control which items are to be randomly generated and the frequency of which certain objects appear.
+   - Tile data is located in the entity definitions which is handled the same way as items, weapons, enemies, etc.
+
+5. Tile Generation
+   Summary: Defines where all entities are for a randomly selected room.
+
+   - All entites are added through the tile generation
+   - The entity adder is set up to allow for easy grid placement. Entities may extend from the room, but the placement coordinates will never be outside of the room.
+   - Entities are randomly generated inside the tile generation, and will be active if current room has enemies, otherwise, enemies are frozen or inactive.
+   
